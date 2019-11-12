@@ -1,0 +1,9 @@
+---
+instance_name: "download_demo"
+instance_password: "password_for_the_user_here"
+instance_flavor: standard.large
+instance_inventory_group: "download"
+instance_user: cloud-user
+
+instance_keypair_name: "{{ instance_name }}"
+instance_keypair_path: ansible-{{ instance_keypair_name }}

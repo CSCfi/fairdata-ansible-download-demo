@@ -1,0 +1,21 @@
+---
+apache2:
+    port: 443
+    serverName: someserver.example.com
+    ssl:
+        key: /etc/letsencrypt/live/someserver.example.com/privkey.pem
+        cert: /etc/letsencrypt/live/someserver.example.com/fullchain.pem
+    proxy:
+        authName: A login title for basic auth
+        htpasswd_path: /opt/httpd
+        htpasswd: /opt/httpd/.htpasswd
+        protocol: http
+        host: 127.0.0.1
+        port: 8433
+        path:
+            external: /secure/
+            internal: /some_internal_api_path/
+        allow:
+            user: a_username
+            password: the_password
+            ips: 127.0.0.1 192.168.10.0/24

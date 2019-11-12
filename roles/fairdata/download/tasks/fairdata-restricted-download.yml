@@ -1,0 +1,50 @@
+###############################################################
+# Author(s):
+#     Juhapekka Piiroinen <juhapekka.piiroinen@csc.fi>
+#
+# License: MIT
+#
+# (C) 2019 Copyright CSC – IT CENTER FOR SCIENCE LTD.
+# All Rights Reserved.
+###############################################################
+---
+- name: "Get source"
+  git:
+    repo: https://github.com/CSCfi/fairdata-restricted-download.git
+    dest: fairdata-restricted-download
+
+- name: Make preparations
+  block:
+    - shell: yum install -y patch
+      become: yes
+    - template:
+        src: 0001-patch-for-demo.patch
+        dest: ~/fairdata-restricted-download/0001-patch-for-demo.patch
+    - shell: |
+        pushd ~/fairdata-restricted-download
+        git am < 0001-patch-for-demo.patch
+    - shell: mkdir -p ~/fairdata-restricted-download/secrets/
+    - template:
+        src: metax.properties
+        dest: ~/fairdata-restricted-download/secrets/metax.properties
+    - template:
+        src: config.properties
+        dest: ~/fairdata-restricted-download/service/config.properties
+    - template:
+        src: docker-compose.yml
+        dest: ~/docker-compose.yml
+    - shell: echo y | ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa
+    - shell: cp ~/.ssh/id_rsa.pub fairdata-restricted-download/id_rsa.pub
+
+- name: "Build it and start it"
+  shell: docker-compose up -d
+
+- name: "Install Terena SSL CA 3 inside the container image"
+  block:
+    - shell: |
+        docker-compose exec fairdata-download yum install -y wget
+        docker-compose exec fairdata-download update-ca-trust force-enable
+        docker-compose exec fairdata-download wget https://dl.cacerts.digicert.com/TERENASSLCA3.crt
+        docker-compose exec fairdata-download cp TERENASSLCA3.crt /etc/pki/ca-trust/source/anchors
+        docker-compose exec fairdata-download keytool -importcert -keystore /etc/pki/java/cacerts -storepass changeit -file /etc/pki/ca-trust/source/anchors/TERENASSLCA3.crt
+        docker-compose exec fairdata-download update-ca-trust extract

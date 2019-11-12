@@ -1,0 +1,15 @@
+version: '3'
+services:
+  fairdata-download:
+    build:
+      context: fairdata-restricted-download/
+      args:
+        ssh_key: "id_rsa.pub"
+        root_password: "{{ fairdownload.password }}"
+    ports:
+      - "8433:8433"
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro

@@ -1,0 +1,5 @@
+---
+uida:
+    url: host_name_here:the_port_here
+    username: username_here
+    password: password_here

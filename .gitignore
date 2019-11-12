@@ -1,0 +1,5 @@
+venv
+ansible-*
+openrc.sh
+*-openrc.sh
+.DS_Store

@@ -1,0 +1,39 @@
+From be79ab1f0ca8dfe0e32efe546a1bd9bd6b0a182a Mon Sep 17 00:00:00 2001
+From: Juhapekka Piiroinen <juhapekka.piiroinen@csc.fi>
+Date: Thu, 14 Nov 2019 10:53:01 +0200
+Subject: [PATCH] patch for demo
+
+---
+ .../fi/csc/fairdata/logindl/Tiedostonk\303\244sittely.java"     | 2 +-
+ src/main/java/fi/csc/fairdata/logindl/ZipTiedosto.java          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git "a/src/main/java/fi/csc/fairdata/logindl/Tiedostonk\303\244sittely.java" "b/src/main/java/fi/csc/fairdata/logindl/Tiedostonk\303\244sittely.java"
+index 09a7d12..ac5fd4f 100644
+--- "a/src/main/java/fi/csc/fairdata/logindl/Tiedostonk\303\244sittely.java"
++++ "b/src/main/java/fi/csc/fairdata/logindl/Tiedostonk\303\244sittely.java"
+@@ -69,7 +69,7 @@ public class Tiedostonkäsittely  {
+ 		try { 
+ 			bof = new BufferedOutputStream(hsr.getOutputStream(), MB4); 
+ 			//System.out.println("Ladattavaksi tuli " + t.getIdentifier());
+-			String uida = ZipTiedosto.UIDAMACHINES[machine][ThreadLocalRandom.current().nextInt(0,5)];
++			String uida = "ida-demo.fairdata.fi"; //UIDAMACHINES[machine][ThreadLocalRandom.current().nextInt(0,5)];
+ 			//System.out.println("Uida; "+uida);
+ 			URL url = new URL(PROTOKOLLA+uida+":"+port+ZipTiedosto.DIR+t.getIdentifier()+"/download");
+ 			con = (HttpURLConnection) url.openConnection();
+diff --git a/src/main/java/fi/csc/fairdata/logindl/ZipTiedosto.java b/src/main/java/fi/csc/fairdata/logindl/ZipTiedosto.java
+index 1d79d12..ec15129 100644
+--- a/src/main/java/fi/csc/fairdata/logindl/ZipTiedosto.java
++++ b/src/main/java/fi/csc/fairdata/logindl/ZipTiedosto.java
+@@ -144,7 +144,7 @@ public class ZipTiedosto {
+ 			}
+ 			filesZipped++;
+ 
+-			String uida = UIDAMACHINES[machine][ThreadLocalRandom.current().nextInt(0,5)];
++			String uida = "ida-demo.fairdata.fi"; //UIDAMACHINES[machine][ThreadLocalRandom.current().nextInt(0,5)];
+ 			HttpURLConnection con = null;
+ 			BufferedInputStream in = null;
+ 			int respCode = -1;
+-- 
+2.21.0 (Apple Git-122.2)
+

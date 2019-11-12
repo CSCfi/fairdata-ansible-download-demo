@@ -1,0 +1,21 @@
+###############################################################
+# Author(s):
+#     Juhapekka Piiroinen <juhapekka.piiroinen@csc.fi>
+#
+# License: MIT
+#
+# (C) 2019 Copyright CSC – IT CENTER FOR SCIENCE LTD.
+# All Rights Reserved.
+###############################################################
+---
+- name: "Setup apache2"
+  include_tasks: apache2.yml
+
+- name: "Setup letsencrypt"
+  include_tasks: letsencrypt.yml
+
+- name: "Enable SSL"
+  include_tasks: apache2-enable-ssl.yml
+
+- name: "Setup fairdata restricted download project"
+  include_tasks: fairdata-restricted-download.yml

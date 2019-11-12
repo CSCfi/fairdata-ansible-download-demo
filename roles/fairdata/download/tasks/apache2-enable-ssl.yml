@@ -1,0 +1,40 @@
+###############################################################
+# Author(s):
+#     Juhapekka Piiroinen <juhapekka.piiroinen@csc.fi>
+#
+# License: MIT
+#
+# (C) 2019 Copyright CSC – IT CENTER FOR SCIENCE LTD.
+# All Rights Reserved.
+###############################################################
+---
+- name: "SELinux: httpd_can_network_connect = 1"
+  shell:  /usr/sbin/setsebool -P httpd_can_network_connect 1
+  become: yes
+
+- name: "Enable SSL config for Apache2"
+  block:
+    - template:
+        src: apache2/conf.d/proxy_http.conf
+        dest: /etc/httpd/conf.d/proxy_http.conf
+      become: yes
+    - template:
+        src: apache2/conf.d/ssl.conf
+        dest: /etc/httpd/conf.d/ssl.conf
+      become: yes
+
+- name: "Install mod_ssl for Apache 2"
+  shell: yum install -y mod_ssl
+  become: yes
+
+- name: "Setup htpasswd with credential"
+  block:
+    - shell: mkdir -p {{ apache2.proxy.htpasswd_path }}
+    - shell: htpasswd -b -c {{ apache2.proxy.htpasswd }} {{ apache2.proxy.allow.user }} {{ apache2.proxy.allow.password }}
+  become: yes
+
+- name: "Reload Apache2"
+  become: yes
+  shell: |
+    systemctl reload httpd
+  

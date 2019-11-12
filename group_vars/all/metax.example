@@ -1,0 +1,5 @@
+---
+metax:
+    url: https://that_metax_host/rest/
+    username: some_user_name
+    password: and_its_password
